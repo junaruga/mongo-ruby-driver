@@ -47,6 +47,7 @@ require 'support/crud'
 require 'support/command_monitoring'
 require 'support/connection_string'
 require 'support/gridfs'
+require 'support/disabled_net_connection'
 
 RSpec.configure do |config|
   config.color     = true
