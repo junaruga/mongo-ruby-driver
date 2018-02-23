@@ -1,16 +1,20 @@
 language: ruby
 
-sudo: false
+sudo: true
 
 rvm:
-  - 1.9.3
-  - 2.4.2
+  #- 1.9.3
+  #- 2.4.2
   - 2.5
-  - ruby-head
-  - jruby-19mode
-  - jruby-9.1.15.0
+  #- ruby-head
+  #- jruby-19mode
+  #- jruby-9.1.15.0
 
 before_install:
+  - |
+    if [ "${EXTERNAL_DISABLE}" != "" ]; then
+      apt-get remove resolvconf
+    fi
   - gem update --system
   - gem update bundler
 
@@ -19,12 +23,13 @@ install: ruby -S bundle install --without release development
 env:
   global:
     - CI="travis"
+    - EXTERNAL_DISABLED=1
     - JRUBY_OPTS="--server -J-Xms512m -J-Xmx1024m"
   matrix:
-    - MONGODB=2.6.12
-    - MONGODB=3.0.12
-    - MONGODB=3.2.11
-    - MONGODB=3.4.1
+    #- MONGODB=2.6.12
+    #- MONGODB=3.0.12
+    #- MONGODB=3.2.11
+    #- MONGODB=3.4.1
     - MONGODB=3.6.2
 
 before_script:
@@ -39,10 +44,10 @@ notifications:
   email: false
   flowdock: 1da4416b8ff98d1880986472428b1b1b
 
-branches:
-  only:
-    - master
-    - 1.x-stable
+#branches:
+#  only:
+#    - master
+#    - 1.x-stable
 
 matrix:
   allow_failures:

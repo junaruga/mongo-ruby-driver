@@ -99,8 +99,10 @@ describe 'Max Staleness Spec' do
       context 'when the max staleness is valid' do
 
         context 'when there are available servers' do
+          puts("DEBUG: After when there are available servers")
 
           it 'Finds all suitable servers in the latency window', if: (spec.replica_set? && !spec.invalid_max_staleness? && spec.server_available?) do
+
             expect(server_selector.send(:select, cluster.servers)).to match_array(in_latency_window)
           end
 
