@@ -1,41 +1,44 @@
 require 'spec_helper'
+# require 'mongo'
 
-describe Mongo::Address::Unix do
+puts "[DEBUG] after spec_helper"
+puts `ss -ltnp`
 
-  let(:resolver) do
-    described_class.new(*described_class.parse(address))
-  end
+# describe Mongo::Address::Unix do
+describe Mongo do
+# describe Foo do
 
-  describe 'self.parse' do
+  puts "[DEBUG] unix_spec.rb Mongo::Address::Unix"
+  puts `ss -ltnp`
 
-    it 'returns the host and no port' do
-      expect(described_class.parse('/path/to/socket.sock')).to eq(['/path/to/socket.sock'])
-    end
-  end
-
-  describe '#initialize' do
-
-    let(:address) do
-      '/path/to/socket.sock'
-    end
-
-    it 'sets the host' do
-      expect(resolver.host).to eq('/path/to/socket.sock')
-    end
-  end
+  # let(:resolver) do
+  #   puts "[DEBUG] resolver"
+  #   puts `ss -ltnp`
+  #   described_class.new(*described_class.parse(address))
+  # end
 
   describe '#socket' do
 
-    let(:address) do
-      '/tmp/mongodb-27017.sock'
-    end
+    puts "[DEBUG] unix_spec.rb Mongo::Address::Unix#socket"
+    puts `ss -ltnp`
 
-    let(:socket) do
-      resolver.socket(5)
-    end
+    # let(:address) do
+    #   puts "[DEBUG] address"
+    #   puts `ss -ltnp`
+    #   '/tmp/mongodb-27017.sock'
+    # end
+
+    # let(:socket) do
+    #   puts "[DEBUG] socket"
+    #   puts `ss -ltnp`
+    #   resolver.socket(5)
+    # end
 
     it 'returns a unix socket' do
-      expect(socket).to be_a(Mongo::Socket::Unix)
+      puts "[DEBUG] returns-a-unix-socket start"
+      puts `ss -ltnp`
+      # expect(socket).to be_a(Mongo::Socket::Unix)
+      expect(true).to be_truthy
     end
   end
 end

@@ -1,3 +1,6 @@
+puts "[DEBUG] spec_helper start"
+puts `ss -ltnp`
+
 TEST_SET = 'ruby-driver-rs'
 COVERAGE_MIN = 90
 CURRENT_PATH = File.expand_path(File.dirname(__FILE__))
@@ -56,20 +59,45 @@ RSpec.configure do |config|
   config.include(Authorization)
 
   config.before(:suite) do
+    puts "[DEBUG] spec_helper before start"
+    puts `ss -ltnp`
+
     begin
       # Create the root user administrator as the first user to be added to the
       # database. This user will need to be authenticated in order to add any
       # more users to any other databases.
+      puts "[DEBUG] spec_helper before add the root user 1"
+      puts `ss -ltnp`
+      # Failed on error.
       ADMIN_UNAUTHORIZED_CLIENT.database.users.create(ROOT_USER)
+      puts "[DEBUG] spec_helper before add the root user 2"
+      puts `ss -ltnp`
       ADMIN_UNAUTHORIZED_CLIENT.close
+      puts "[DEBUG] spec_helper before add the root user 3"
+      puts `ss -ltnp`
     rescue Exception => e
+      puts "[DEBUG] spec_helper before create root user exception."
+      puts `ss -ltnp`
+      puts "Exception: #{e}"
+      puts e.backtrace
     end
     begin
       # Adds the test user to the test database with permissions on all
       # databases that will be used in the test suite.
+      puts "[DEBUG] spec_helper before add the test user 1."
+      puts `ss -ltnp`
       ADMIN_AUTHORIZED_TEST_CLIENT.database.users.create(TEST_USER)
+      puts "[DEBUG] spec_helper before add the test user 2."
+      puts `ss -ltnp`
     rescue Exception => e
+      puts "[DEBUG] spec_helper before add the test user exception."
+      puts `ss -ltnp`
+      puts "Exception: #{e}"
+      puts e.backtrace
     end
+
+    puts "[DEBUG] spec_helper before end"
+    puts `ss -ltnp`
   end
 end
 
@@ -257,3 +285,6 @@ end
 
 # require all shared examples
 Dir['./spec/support/shared/*.rb'].sort.each { |file| require file }
+
+puts "[DEBUG] spec_helper end"
+puts `ss -ltnp`

@@ -52,7 +52,11 @@ module Mongo
       # @since 2.0.0
       def initialize(path, timeout)
         @path, @timeout = path, timeout
+        puts "[DEBUG] UNIXSocket.new path: #{path}"
+        puts `ls -l #{path}`
+        puts `ss -ltnp`
         @socket = ::UNIXSocket.new(path)
+        puts "[DEBUG] UNIXSocket.new ok"
         set_socket_options(@socket)
       end
 

@@ -20,6 +20,9 @@ module Mongo
     # @since 2.0.0
     class Unix
 
+      puts "[DEBUG] Mongo::Address::Unix"
+      puts `ss -ltnp`
+
       # @return [ String ] host The host.
       attr_reader :host
 
@@ -54,6 +57,8 @@ module Mongo
       #
       # @since 2.0.0
       def initialize(host, port=nil, host_name=nil)
+        puts "[DEBUG] Mongo::Address::Unix initialize"
+        puts `ss -ltnp`
         @host = host
       end
 
