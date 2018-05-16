@@ -60,15 +60,33 @@ RSpec.configure do |config|
       # Create the root user administrator as the first user to be added to the
       # database. This user will need to be authenticated in order to add any
       # more users to any other databases.
+      puts "[DEBUG] spec_helper before create the root user"
+      puts `ss -ltnp`
+      puts "[DEBUG] ADMIN_UNAUTHORIZED_CLIENT options: #{ADMIN_UNAUTHORIZED_CLIENT.options}"
+      puts "[DEBUG] ROOT_USER.database: #{ROOT_USER.database}"
+      puts "[DEBUG] ROOT_USER.auth_source: #{ROOT_USER.auth_source}"
+      puts "[DEBUG] ROOT_USER.name: #{ROOT_USER.name}"
+      puts "[DEBUG] ROOT_USER.password: #{ROOT_USER.password}"
+      puts "[DEBUG] ROOT_USER.mechanism: #{ROOT_USER.mechanism}"
+      puts "[DEBUG] ROOT_USER.auth_mech_properties: #{ROOT_USER.auth_mech_properties}"
+      puts "[DEBUG] ROOT_USER.roles: #{ROOT_USER.roles}"
+      puts "[DEBUG] ROOT_USER.spec: #{ROOT_USER.spec}"
+      # Failed on error.
       ADMIN_UNAUTHORIZED_CLIENT.database.users.create(ROOT_USER)
+      puts "[DEBUG] spec_helper after create the root user"
+      puts `ss -ltnp`
       ADMIN_UNAUTHORIZED_CLIENT.close
     rescue Exception => e
+      puts "[DEBUG] spec_helper create the root user exception."
+      puts `ss -ltnp`
+      raise e
     end
     begin
       # Adds the test user to the test database with permissions on all
       # databases that will be used in the test suite.
       ADMIN_AUTHORIZED_TEST_CLIENT.database.users.create(TEST_USER)
     rescue Exception => e
+      raise e
     end
   end
 end
