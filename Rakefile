@@ -74,6 +74,56 @@ namespace :spec do
   task :ci => ['spec:prepare', :spec]
 end
 
+namespace :spec do
+  MONGODB_VERSION = ENV['MONGODB_VERSION']
+  TMP_DIR = 'tmp'
+  mongod_cmd = 'mongod'
+  archive_url = nil
+  mongod_cmd = File.join(TMP_DIR, "mongodb-linux-x86_64-#{MONGODB_VERSION}", "bin", mongod_cmd)
+  mongod_cmd = File.expand_path(mongod_cmd)
+  archive_url = "http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-#{MONGODB_VERSION}.tgz"
+  DATA_DIR = File.join(TMP_DIR, 'data')
+  LOG_FILE = File.join(TMP_DIR, 'mongod.log')
+
+  desc "Run RSpec code examples for CI"
+  task :ci => [:start_mongod, :spec, :stop_mongod]
+
+  desc "Start mongod"
+  task :start_mongod do
+    unless MONGODB_VERSION
+      raise "The environment varialbe: MONGODB_VERSION is required."
+    end
+
+    # Initialize temporary directory.
+    rm_rf TMP_DIR
+    mkdir_p TMP_DIR
+
+    # Download and extract MongoDB.
+    if MONGODB_VERSION
+      archive_file = File.join(TMP_DIR, 'mongodb.tgz')
+      sh "wget #{archive_url} -O #{archive_file}"
+      sh "tar -xvf #{archive_file} -C #{TMP_DIR}"
+    end
+
+    # Start mongod
+    mkdir_p DATA_DIR
+    sh "#{mongod_cmd} --dbpath #{DATA_DIR} --bind_ip 127.0.0.1 --auth --fork --logpath #{LOG_FILE}"
+  end
+
+  desc "Stop mongod"
+  task :stop_mongod do
+    unless MONGODB_VERSION
+      raise "The environment varialbe: MONGODB_VERSION is required."
+    end
+
+    sh "#{mongod_cmd} --shutdown --dbpath #{DATA_DIR}"
+  end
+
+  desc "Run RSpec code examples with standalone mongod for CI"
+  # https://github.com/mongodb/mongo-ruby-driver/blob/master/spec/README.md#standalone
+  task :ci_standalone => [:start_mongod, :prepare, :spec, :stop_mongod]
+end
+
 namespace :release do
   task :check_private_key do
     unless File.exists?('gem-private_key.pem')
