@@ -19,10 +19,10 @@ rvm:
   - 1.9.3
   - 2.6
 
-branches:
-  only:
-    - master
-    - 2.5-stable
+# branches:
+#   only:
+#     - master
+#     - 2.5-stable
 
 matrix:
   exclude:
