@@ -37,7 +37,6 @@ module Mongo
       #
       # @since 2.6.0
       def initialize(crud_spec, data, test)
-        test = IceNine.deep_freeze(test)
         @spec = crud_spec
         @data = data
         @description = test['description']
