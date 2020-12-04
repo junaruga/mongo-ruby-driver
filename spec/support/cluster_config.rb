@@ -38,6 +38,7 @@ class ClusterConfig
   # less than 3.4. This method returns FCV on 3.4+ servers when in single
   # or RS topologies, and otherwise returns the major.minor server version.
   def fcv_ish
+    determine_cluster_config
     if server_version.nil?
       raise "Deployment server version not known - check that connection to deployment succeeded"
     end
@@ -163,7 +164,9 @@ class ClusterConfig
   private
 
   def determine_cluster_config
+    p "[DEBUG] spec/support/cluster_config.rb determine_cluster_config init primary_address: #{@primary_address}"
     return if @primary_address
+    p "[DEBUG] spec/support/cluster_config.rb determine_cluster_config after 1st return."
 
     # Run all commands to figure out the cluster configuration from the same
     # client. This is somewhat wasteful when running a single test, but reduces
@@ -189,6 +192,9 @@ class ClusterConfig
     @single_server = client.cluster.servers_list.length == 1
 
     build_info = client.database.command(buildInfo: 1).first
+
+    # Debug
+    p "[DEBUG] spec/support/cluster_config.rb determine_cluster_config build_info: #{build_info}"
 
     @server_version = build_info['version']
     @enterprise = build_info['modules'] && build_info['modules'].include?('enterprise')
