@@ -1,4 +1,4 @@
-autoload :Byebug, 'byebug'
+#autoload :Byebug, 'byebug'
 autoload :Paint, 'paint'
 
 module Aws
