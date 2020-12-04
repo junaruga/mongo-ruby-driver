@@ -6,7 +6,7 @@ require 'support/authorization'
 require 'support/primary_socket'
 require 'support/cluster_config'
 require 'support/cluster_tools'
-require 'rspec/retry'
+#require 'rspec/retry'
 require 'support/monitoring_ext'
 require 'support/local_resource_registry'
 
