@@ -26,7 +26,7 @@ module Mongo
       # @since 2.0.0
       def initialize(crud_test, spec, outcome_spec = nil)
         @crud_test = crud_test
-        @spec = IceNine.deep_freeze(spec)
+        @spec = spec
         @name = spec['name']
         if spec['arguments']
           @arguments = BSON::ExtJSON.parse_obj(spec['arguments'])
