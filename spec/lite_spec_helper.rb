@@ -26,17 +26,17 @@ CLIENT_SIDE_ENCRYPTION_TESTS = Dir.glob("#{CURRENT_PATH}/spec_tests/data/client_
 STDOUT.sync = true
 STDERR.sync = true
 
-if %w(1 true yes).include?(ENV['CI']&.downcase)
-  autoload :Byebug, 'byebug'
-else
-  # Load debuggers before loading the driver code, so that breakpoints
-  # can be placed in the driver code on file/class level.
-  begin
-    require 'byebug'
-  rescue LoadError
-    require 'ruby-debug'
-  end
-end
+#if %w(1 true yes).include?(ENV['CI']&.downcase)
+#  autoload :Byebug, 'byebug'
+#else
+#  # Load debuggers before loading the driver code, so that breakpoints
+#  # can be placed in the driver code on file/class level.
+#  begin
+#    require 'byebug'
+#  rescue LoadError
+#    require 'ruby-debug'
+#  end
+#end
 
 require 'mongo'
 require 'pp'
